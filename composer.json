@@ -2,7 +2,7 @@
     "config": {
         "vendor-dir": "system"
     },
-    "name": "elevenone/radar.buildup",
+    "name": "elevenone/radar.zombie",
     "description": "A sample project for killing time and building an application using adr",
     "type": "project",
     "license": "MIT",
