@@ -13,8 +13,8 @@ namespace Application\Config;
 use PDO;
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
-use Aura\Payload\Payload;
-use Aura\Payload_Interface\PayloadStatus;
+// use Aura\Payload\Payload;
+// use Aura\Payload_Interface\PayloadStatus;
 use Relay\Middleware\ExceptionHandler;
 use Relay\Middleware\ResponseSender;
 use Zend\Diactoros\Response as Response;
@@ -39,19 +39,26 @@ class Application extends ContainerConfig
     public function define(Container $di)
     {
         /**
-         * Services
+         * Parameters
          */
-        //
-		
-        /**
-         * Environment
-         */
-        //
-
-        /**
-         * Responder
-         */
-        //
+        // Aura.view
+        // views
+        $path_to_config_file; 
+        $views = [
+            'views' => [
+                'path' => realpath( __DIR__ . '/../../auraview'),
+                'layout' => '_layout.php',
+                'error' => '_error.php',
+                'partials' => [
+                    'content' => '_content.php',
+                    'header' => '_header.php',
+                    'footer' => '_footer.php',
+                    ]
+                ]
+            ];
+        // aura
+        $di->params['Application\Responder\AuraViewResponder']['viewDir'] = $views['views']['path'];
+        $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
 
     }
 
@@ -67,24 +74,45 @@ class Application extends ContainerConfig
         $adr = $di->get('radar/adr:adr');
 
         /**
+         * Middleware
+         */
+        $adr->middle(new ResponseSender());
+        $adr->middle(new ExceptionHandler(new Response()));
+        $adr->middle('Radar\Adr\Handler\RoutingHandler');
+        $adr->middle('Radar\Adr\Handler\ActionHandler');
+
+        /**
+         * Input
+         */
+        $adr->input('Application\Input\MergedArray');
+        // $adr->input('Application\Input\NoneExpected');
+
+        /**
+         * Responder
+         */
+        // $adr->responder('Application\Responder\HtmlResponder');
+        $adr->responder('Application\Responder\AuraViewResponder');
+
+        /**
          * Routes
          */
-		$adr->get('Hello', '/{name}?', function (array $input) {
-		        $payload = new Payload();
-		        return $payload
-		            ->setStatus(PayloadStatus::SUCCESS)
-		            ->setOutput([
-		                'phrase' => 'Hello ' . $input['name']
-		            ]);
-		    })
-		    ->defaults(['name' => 'world']);
+        $adr->get('Hello', '/hello/{name}?', function (array $input) {
+                $payload = new Payload();
+                return $payload
+                    ->setStatus(PayloadStatus::SUCCESS)
+                    ->setOutput([
+                        'phrase' => 'Hello ' . $input['name']
+                    ]);
+            })
+            ->defaults(['name' => 'world']);
 
-		$adr->get('site.index', '/class/{name}?', ['Application\Domain\Index', '_invoke'])
-			->defaults(['name' => 'mikkamakka']);
-		
-		$adr->get('also', '/also/{name}?', \Application\Domain\Hello::class)
-		    ->defaults(['name' => 'world']);
+        // $adr->get('site.index', '/class/{name}?', ['Application\Domain\Index', '_invoke'])
+        //     ->defaults(['name' => 'mikkamakka']);
 
+        $adr->get('index', '/{name}?', \Application\Domain\Hello::class)
+            // ->input('Application\Input\NoneExpected')
+            // ->responder('Portfolio\Delivery\Responder\AuraViewResponder')
+            ->defaults(['name' => 'world']);
 
     }
 
