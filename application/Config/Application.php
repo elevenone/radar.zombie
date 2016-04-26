@@ -81,6 +81,9 @@ class Application extends ContainerConfig
 
 		$adr->get('site.index', '/class/{name}?', ['Application\Domain\Index', '_invoke'])
 			->defaults(['name' => 'mikkamakka']);
+		
+		$adr->get('also', '/also/{name}?', \Application\Domain\Hello::class)
+		    ->defaults(['name' => 'world']);
 
 
     }
