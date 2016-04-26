@@ -71,81 +71,13 @@ class AuraViewResponder implements ResponderAcceptsInterface
      * @access public
      */
 	// todo // get an array with the files
-    public function __construct($viewDir) // $viewDir
+    public function __construct($views) // $viewDir
     {
-//		if ($views) {
-			// print_r($views);
-//			$this->$views = $views;
-//		}
-        if (is_array($views))
-        {
-			// $this->$views = $views;
-//			$obj = new \stdClass();
-//			array_to_obj($views, $obj->$key);
-        }
-        else
-        {
-//			$obj = $views;
-			// $this->$views = $views;
-        }
-
-        $this->viewDir = $viewDir;
-//		echo $this->viewDir;
-		
-  //      if (file_exists($this->viewDir . '/' . $view)) {
-	//		echo '78978987<br/><br/><br/>';
-	//		echo $this->viewDir . '/' . 'layout.php';
-            // include $this->viewDir . '/' . $view;
-      //  }
-		
+        $this->views = $views;
+        $this->path = $this->views['views']['path'];
     }
 
-    /**
-     * SetRules
-     *
-     * @param array $rules Map of rules
-     *
-     * @return mixed
-     *
-     * @access public
-     */
-    public function setViews()
-    {
-        // echo 'set views';
-        //$this->rules = $rules;
-        //return $this;
 
-        if (is_array($views))
-        {
-            // 00 vars
-            $folder = Arr::path($views, 'views.path');
-            //$layout = Arr::path($views, 'views.layout');
-            //$error = Arr::path($views, 'views.error');
-            //$partials = Arr::path($views, 'views.partials');
-            //$static = Arr::path($views, 'views.static');
-
-            // 01 main template
-            //$layout_registry->set('layout', APPPATH . $folder . DIRECTORY_SEPARATOR . $layout);
-
-            // error template
-            //$layout_registry->set('error',  APPPATH . $folder . DIRECTORY_SEPARATOR . $error);
-
-            // 02 sub templates
-//            foreach ($partials as $key => $value)
-//            {
-//                $view_registry->set( $key,  APPPATH . $folder . DIRECTORY_SEPARATOR . $value );
-                // echo $key,  APPPATH . $folder . DIRECTORY_SEPARATOR . $value . '<br/>' ;
-//            }
-
-            // 03 sub templates
-//            foreach ($static as $key => $value)
-//            {
-//                $view_registry->set( $key,  APPPATH . $folder . DIRECTORY_SEPARATOR . $value );
-//            }
-
-        }
-
-    }
 
     /**
      *
@@ -190,6 +122,7 @@ class AuraViewResponder implements ResponderAcceptsInterface
     //
     protected function htmlBody(array $data)
     {
+
         // Aura.view setup
         $view_factory = new ViewFactory;
         $view = $view_factory->newInstance();
@@ -199,16 +132,16 @@ class AuraViewResponder implements ResponderAcceptsInterface
 
         // main view
         $layout_registry = $view->getLayoutRegistry();
-        $layout_registry->set('layout', $this->viewDir . '/layout.php');
+        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
 
         // partial view
         $view_registry = $view->getViewRegistry();
-        $partial = $this->request->getAttribute('_content');
-        $view_registry->set('_content', $this->viewDir . '/_' . $partial); // set partial view main content file as dynamic partial
+        // $partial = $this->request->getAttribute('_content');
+        $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']); // set partial view main content file as dynamic partial
 
         $dataset = [
             'data' => $data, // passing data array to view
-            'partial' => $partial, // passing partial view filename as string to layout
+            'partial' => 'partial', // passing partial view filename as string to layout
         ];
 
         $view->setData($dataset); // do it
@@ -218,7 +151,11 @@ class AuraViewResponder implements ResponderAcceptsInterface
         $view->setLayout('layout');
         $output = $view->__invoke(); // or just $view()
 
-		//
+
+
+
+
+        //
         $this->response = $this->response->withHeader('Content-Type', 'text/html');
         $this->response->getBody()->write($output);
     }
