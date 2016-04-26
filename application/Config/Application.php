@@ -38,10 +38,22 @@ class Application extends ContainerConfig
      */
     public function define(Container $di)
     {
-		//
+        /**
+         * Services
+         */
+        //
+		
+        /**
+         * Environment
+         */
+        //
+
+        /**
+         * Responder
+         */
+        //
+
     }
-
-
 
     /**
      *
@@ -53,8 +65,10 @@ class Application extends ContainerConfig
     public function modify(Container $di)
     {
         $adr = $di->get('radar/adr:adr');
-        $this->adr = $adr;
 
+        /**
+         * Routes
+         */
 		$adr->get('Hello', '/{name}?', function (array $input) {
 		        $payload = new Payload();
 		        return $payload
