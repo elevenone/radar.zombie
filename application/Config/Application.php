@@ -43,21 +43,21 @@ class Application extends ContainerConfig
          */
         // Aura.view
         // views
-        $path_to_config_file; 
+        $path_to_config_file;
         $views = [
             'views' => [
-                'path' => realpath( __DIR__ . '/../../auraview'),
-                'layout' => '_layout.php',
-                'error' => '_error.php',
+                'path' => realpath( __DIR__ . '/../auraview'),
+                'layout' => '/layout.php',
+                'error' => '/_error.php',
                 'partials' => [
-                    'content' => '_content.php',
-                    'header' => '_header.php',
-                    'footer' => '_footer.php',
+                    'content' => '/_content.php',
+                    'header' => '/_header.php',
+                    'footer' => '/_footer.php',
                     ]
                 ]
             ];
         // aura
-        $di->params['Application\Responder\AuraViewResponder']['viewDir'] = $views['views']['path'];
+        // $di->params['Application\Responder\AuraViewResponder']['viewDir'] = $views['views']['path'];
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
 
     }
