@@ -11,7 +11,8 @@
         "radar/adr": "~1.0",
         "relay/middleware": "~1.0",
         "josegonzalez/dotenv": "~1.0",
-        "zendframework/zend-diactoros": "~1.0"
+        "zendframework/zend-diactoros": "~1.0",
+        "aura/view": "^2.2"
     },
     "autoload": {
         "psr-4": {
