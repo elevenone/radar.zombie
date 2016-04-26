@@ -19,26 +19,24 @@ use Zend\Diactoros\ServerRequestFactory as ServerRequestFactory;
 $boot = new Boot();
 /** @var \Radar\Adr\Adr|\Aura\Router\Map $adr */
 $adr = $boot->adr([
-	'Application\\Config\\Routes'
+	'Application\Config\Application',
+	// 'Application\\Config\\Routes',
 ]);
+
+
 
 /**
  * Middleware
  */
 $adr->middle(new ResponseSender());
 $adr->middle(new ExceptionHandler(new Response()));
-$adr->middle('Radar\\Adr\\Handler\\RoutingHandler');
-$adr->middle('Radar\\Adr\\Handler\\ActionHandler');
+$adr->middle('Radar\Adr\Handler\RoutingHandler');
+$adr->middle('Radar\Adr\Handler\ActionHandler');
 
 /**
  * Routes
- *
- * The Domain specification is a string or an array:
- * * If a string, Radar will instantiate this class using the internal dependency injection container and call its __invoke() method with the user input from the HTTP request.
- * * If an array in the format ['ClassName', 'method'], the dependency injection container will instantiate the specfied class name, and then call the specified method with the user input from the HTTP request.
- *
  */
-// $adr->get('site.index', '/{name}', ['Application\\Domain\\Index', 'index']);
+// in config container
 
 
 
