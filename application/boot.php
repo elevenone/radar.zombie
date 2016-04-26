@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * // aaa
+ * bootstrap file brings good luck
  *
  */
 use josegonzalez\Dotenv\Loader as Dotenv;
@@ -17,28 +17,22 @@ use Zend\Diactoros\ServerRequestFactory as ServerRequestFactory;
  * Boot
  */
 $boot = new Boot();
-/** @var \Radar\Adr\Adr|\Aura\Router\Map $adr */
+
+// boot adr with Config
 $adr = $boot->adr([
-	'Application\Config\Application',
-	// 'Application\\Config\\Routes',
+    'Application\Config\Application',
+    // 'Application\\Config\\Routes',
 ]);
-
-
 
 /**
  * Middleware
  */
-$adr->middle(new ResponseSender());
-$adr->middle(new ExceptionHandler(new Response()));
-$adr->middle('Radar\Adr\Handler\RoutingHandler');
-$adr->middle('Radar\Adr\Handler\ActionHandler');
+// defined in config container
 
 /**
  * Routes
  */
-// in config container
-
-
+// defined in config container
 
 /**
  * Run
