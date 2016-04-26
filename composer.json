@@ -20,7 +20,7 @@
     },
     "scripts": {
         "post-create-project-cmd": [
-            "php --run \"touch('.env');\""
+            "php cleanup.php"
         ]
     },
     "authors": [
