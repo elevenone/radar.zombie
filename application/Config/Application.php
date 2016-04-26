@@ -59,6 +59,7 @@ class Application extends ContainerConfig
         // aura
         // $di->params['Application\Responder\AuraViewResponder']['viewDir'] = $views['views']['path'];
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
+        $di->params['Application\Responder\AuraViewPayloadResponder']['views'] = $views;
 
     }
 
@@ -112,6 +113,11 @@ class Application extends ContainerConfig
         $adr->get('index', '/{name}?', \Application\Domain\Hello::class)
             // ->input('Application\Input\NoneExpected')
             // ->responder('Portfolio\Delivery\Responder\AuraViewResponder')
+            ->defaults(['name' => 'world']);
+
+        $adr->get('index2', '/payload/{name}?', \Application\Domain\HelloPayload::class)
+            // ->input('Application\Input\NoneExpected')
+            ->responder('Application\Responder\AuraViewPayloadResponder')
             ->defaults(['name' => 'world']);
 
     }
