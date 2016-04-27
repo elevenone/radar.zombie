@@ -110,11 +110,13 @@ class Application extends ContainerConfig
         // $adr->get('site.index', '/class/{name}?', ['Application\Domain\Index', '_invoke'])
         //     ->defaults(['name' => 'mikkamakka']);
 
+		// the responder here uses an array from the action
         $adr->get('index', '/{name}?', \Application\Domain\Hello::class)
             // ->input('Application\Input\NoneExpected')
             // ->responder('Portfolio\Delivery\Responder\AuraViewResponder')
             ->defaults(['name' => 'world']);
 
+		// the responder here uses aura.payload object from the action
         $adr->get('index2', '/payload/{name}?', \Application\Domain\HelloPayload::class)
             // ->input('Application\Input\NoneExpected')
             ->responder('Application\Responder\AuraViewPayloadResponder')
