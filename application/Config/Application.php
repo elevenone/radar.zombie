@@ -103,10 +103,10 @@ class Application extends ContainerConfig
         // app routes
 
         // static page views route
-        $adr->get('staticpage', '/page/{name}?', \Application\Domain\Hello::class)
-            ->input('Application\Input\MergedArray')
-            ->responder('Application\Responder\AuraViewResponder')
-            ->defaults(['name' => 'mikka|makka|zorro']);
+        $adr->get('staticpage', '/page/{page}?', \Application\Domain\Hello::class)
+            // ->input('Application\Input\MergedArray')
+            // ->responder('Application\Responder\AuraViewResponder')
+            ->defaults(['page' => 'mikka']);
 
 
 

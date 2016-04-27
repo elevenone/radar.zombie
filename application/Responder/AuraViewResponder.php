@@ -112,8 +112,10 @@ class AuraViewResponder implements ResponderAcceptsInterface
 
         // partial view
         $view_registry = $view->getViewRegistry();
-        $partial = $this->request->getAttribute('_content');
-        $view_registry->set('_content', $this->path . '/partials/_mikka.php');
+
+        // get view name from slug
+        $partial = $this->request->getAttribute('page');
+        $view_registry->set('_content', $this->path . '/partials/_' . $partial . '.php');
         // $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
 
         $dataset = [
