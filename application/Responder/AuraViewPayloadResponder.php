@@ -156,22 +156,66 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         // partial view
         $view_registry = $view->getViewRegistry();
         // $partial = $this->request->getAttribute('_content');
-        $view_registry->set('_content', $this->path . $this->views['views']['partials']['contenta']);
+        $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
+
         $dataset = [
             'data' => $data, // passing data array to view
             'partial' => 'partial', // passing partial view filename as string to layout
         ];
 
-        $view->setData($dataset); // do it
+        // assign data to view
+        $view->setData($dataset);
 
         // set views
         $view->setView('_content');
         $view->setLayout('layout');
-        $output = $view->__invoke(); // or just $view()
+        $output = $view->__invoke();
 
-        // set response
+        //
         $this->response = $this->response->withHeader('Content-Type', 'text/html');
         $this->response->getBody()->write($output);
+    }
+
+    /**
+     * Checks for ajax request
+     * @return bool
+     */
+    protected function is_pjax()
+    {
+        // if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+        if(isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == 'true')
+        {
+            // echo 'pjax = true';
+            return TRUE;
+        }
+        // echo 'pjax = false';
+        return FALSE;
+    }
+
+    // psr-7
+    protected function is_pjax_psr7()
+    {
+        $serverparams = $this->request->getServerParams();
+
+        if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
+        {
+            echo 'pjax PSR-7 = true';
+
+            echo '<pre>';
+            $serverparams = $this->request->getServerParams();
+            print_r($serverparams['HTTP_X_PJAX']);
+            echo '</pre>';
+
+            return TRUE;
+        }
+        echo 'pjax PSR-7 = false';
+
+        echo '<pre>';
+        $serverparams = $this->request->getServerParams();
+        print_r($serverparams['HTTP_X_PJAX']);
+        echo '</pre>';
+
+        return FALSE;
     }
 
     /**
