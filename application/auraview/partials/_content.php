@@ -1,3 +1,4 @@
+<hr/>
 <?php
 print_r($this->data);
 
@@ -23,11 +24,6 @@ if ( isset($this->data['posts'])  ) // && is_array($this->posts)
 }
 ?>
 
-
-content 
-<hr/>
-<hr/>
-<hr/>
 <?php
 /*
 if ( isset($this->posts) && is_array($this->posts) )
@@ -50,3 +46,4 @@ if ( isset($this->posts) && is_array($this->posts) )
 }
 */
 ?>
+<hr/>

@@ -15,9 +15,9 @@ class AuraViews
 		        'layout' => '/layout.php',
 		        'error' => '/_error.php',
 		        'partials' => [
-		            'content' => '/_content.php',
-		            'header' => '/_header.php',
-		            'footer' => '/_footer.php',
+		            'content' => '/partials/_content.php',
+		            // 'header' => '/partials/_header.php',
+		            // 'footer' => '/partials/_footer.php',
 		            ]
 		        ]
 		    ];
