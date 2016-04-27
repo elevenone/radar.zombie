@@ -1,5 +1,6 @@
 <hr/>
 <?php
+var_dump($this->data);
 print_r($this->data);
 
 
