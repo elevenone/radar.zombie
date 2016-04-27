@@ -102,25 +102,26 @@ class AuraViewResponder implements ResponderAcceptsInterface
         // add templates to the view registry
         $view_registry = $view->getViewRegistry();
 
-		// if it is not an ajax request render main layout file
-		if( ! $this->is_pjax() )
-		{
-			// main view
-	        $layout_registry = $view->getLayoutRegistry();
-	        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
-		}
+        // if it is not an ajax request render main layout file
+        if( ! $this->is_pjax() )
+        {
+            // main view
+            $layout_registry = $view->getLayoutRegistry();
+            $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
+        }
 
         // partial view
         $view_registry = $view->getViewRegistry();
-        // $partial = $this->request->getAttribute('_content');
-        $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
+        $partial = $this->request->getAttribute('_content');
+        $view_registry->set('_content', $this->path . '/partials/_mikka.php');
+        // $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
 
         $dataset = [
             'data' => $data, // passing data array to view
-            'partial' => 'partial', // passing partial view filename as string to layout
+            'partial' => $partial, // passing partial view filename as string to layout
         ];
 
-		// assign data to view
+        // assign data to view
         $view->setData($dataset);
 
         // set views
@@ -133,52 +134,47 @@ class AuraViewResponder implements ResponderAcceptsInterface
         $this->response->getBody()->write($output);
     }
 
-	/**
-	 * Checks for ajax request
-	 * @return bool
-	 */
-	protected function is_pjax()
-	{
-		// if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
-		if(isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == 'true')
-		{
-//			echo 'pjax = true';
-			return TRUE;
-		}
-//		echo 'pjax = false';
-		return FALSE;
-	}
+    /**
+     * Checks for ajax request
+     * @return bool
+     */
+    protected function is_pjax()
+    {
+        // if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+        if(isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == 'true')
+        {
+            // echo 'pjax = true';
+            return TRUE;
+        }
+        // echo 'pjax = false';
+        return FALSE;
+    }
 
-	// psr-7
-	protected function is_pjax_psr7()
-	{
-		$serverparams = $this->request->getServerParams();
+    // psr-7
+    protected function is_pjax_psr7()
+    {
+        $serverparams = $this->request->getServerParams();
 
-		if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
-		{
-			echo 'pjax PSR-7 = true';
+        if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
+        {
+            echo 'pjax PSR-7 = true';
 
-			echo '<pre>';
-			$serverparams = $this->request->getServerParams();
-			print_r($serverparams['HTTP_X_PJAX']);
-			echo '</pre>';
+            echo '<pre>';
+            $serverparams = $this->request->getServerParams();
+            print_r($serverparams['HTTP_X_PJAX']);
+            echo '</pre>';
 
-			return TRUE;
-		}
-		echo 'pjax PSR-7 = false';
+            return TRUE;
+        }
+        echo 'pjax PSR-7 = false';
 
-		echo '<pre>';
-		$serverparams = $this->request->getServerParams();
-		print_r($serverparams['HTTP_X_PJAX']);
-		echo '</pre>';
+        echo '<pre>';
+        $serverparams = $this->request->getServerParams();
+        print_r($serverparams['HTTP_X_PJAX']);
+        echo '</pre>';
 
-		return FALSE;
-	}
-
-
-
-
-
+        return FALSE;
+    }
 
     /**
      * Builds a Response for PayloadStatus::SUCCESS.
