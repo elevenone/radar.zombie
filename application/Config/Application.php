@@ -42,8 +42,11 @@ class Application extends ContainerConfig
          * Parameters
          */
         // Aura.view
-        // views
         $path_to_config_file;
+		
+		$viewsconfig = new \Application\Config\AuraViews;
+		$views = $viewsconfig->getViews();
+		/*
         $views = [
             'views' => [
                 'path' => realpath( __DIR__ . '/../auraview'),
@@ -56,8 +59,8 @@ class Application extends ContainerConfig
                     ]
                 ]
             ];
+		*/
         // aura
-        // $di->params['Application\Responder\AuraViewResponder']['viewDir'] = $views['views']['path'];
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
         $di->params['Application\Responder\AuraViewPayloadResponder']['views'] = $views;
 
