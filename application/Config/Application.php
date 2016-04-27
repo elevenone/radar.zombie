@@ -41,29 +41,16 @@ class Application extends ContainerConfig
         /**
          * Parameters
          */
-        // Aura.view
-        $path_to_config_file;
-		
-		$viewsconfig = new \Application\Config\AuraViews;
-		$views = $viewsconfig->getViews();
-		/*
-        $views = [
-            'views' => [
-                'path' => realpath( __DIR__ . '/../auraview'),
-                'layout' => '/layout.php',
-                'error' => '/_error.php',
-                'partials' => [
-                    'content' => '/_content.php',
-                    'header' => '/_header.php',
-                    'footer' => '/_footer.php',
-                    ]
-                ]
-            ];
-		*/
-        // aura
+
+        /**
+         * Aura.view
+         */
+        // view files and paths from class
+        $viewsconfig = new \Application\Config\AuraViews;
+        $views = $viewsconfig->getViews();
+
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
         $di->params['Application\Responder\AuraViewPayloadResponder']['views'] = $views;
-
     }
 
     /**
@@ -88,18 +75,19 @@ class Application extends ContainerConfig
         /**
          * Input
          */
-        $adr->input('Application\Input\MergedArray');
+        // $adr->input('Application\Input\MergedArray');
         // $adr->input('Application\Input\NoneExpected');
 
         /**
          * Responder
          */
-        // $adr->responder('Application\Responder\HtmlResponder');
         $adr->responder('Application\Responder\AuraViewResponder');
 
         /**
          * Routes
          */
+
+        // demo route
         $adr->get('Hello', '/hello/{name}?', function (array $input) {
                 $payload = new Payload();
                 return $payload
@@ -109,6 +97,18 @@ class Application extends ContainerConfig
                     ]);
             })
             ->defaults(['name' => 'world']);
+
+
+
+        // app routes
+
+        // static page views route
+        $adr->get('staticpage', '/page/{name}?', \Application\Domain\Hello::class)
+            ->input('Application\Input\MergedArray')
+            ->responder('Application\Responder\AuraViewResponder')
+            ->defaults(['name' => 'mikka|makka|zorro']);
+
+
 
         // $adr->get('site.index', '/class/{name}?', ['Application\Domain\Index', '_invoke'])
         //     ->defaults(['name' => 'mikkamakka']);
