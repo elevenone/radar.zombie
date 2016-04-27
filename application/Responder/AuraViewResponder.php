@@ -149,6 +149,37 @@ class AuraViewResponder implements ResponderAcceptsInterface
 		return FALSE;
 	}
 
+	// psr-7
+	protected function is_pjax_psr7()
+	{
+		$serverparams = $this->request->getServerParams();
+
+		if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
+		{
+			echo 'pjax PSR-7 = true';
+
+			echo '<pre>';
+			$serverparams = $this->request->getServerParams();
+			print_r($serverparams['HTTP_X_PJAX']);
+			echo '</pre>';
+
+			return TRUE;
+		}
+		echo 'pjax PSR-7 = false';
+
+		echo '<pre>';
+		$serverparams = $this->request->getServerParams();
+		print_r($serverparams['HTTP_X_PJAX']);
+		echo '</pre>';
+
+		return FALSE;
+	}
+
+
+
+
+
+
     /**
      * Builds a Response for PayloadStatus::SUCCESS.
      */
