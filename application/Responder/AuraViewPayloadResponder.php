@@ -156,7 +156,7 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         // partial view
         $view_registry = $view->getViewRegistry();
         // $partial = $this->request->getAttribute('_content');
-        $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
+        $view_registry->set('_content', $this->path . $this->views['views']['partials']['contenta']);
         $dataset = [
             'data' => $data, // passing data array to view
             'partial' => 'partial', // passing partial view filename as string to layout

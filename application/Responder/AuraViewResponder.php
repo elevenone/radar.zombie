@@ -144,16 +144,13 @@ class AuraViewResponder implements ResponderAcceptsInterface
             'partial' => 'partial', // passing partial view filename as string to layout
         ];
 
-        $view->setData($dataset); // do it
+		// assign data to view
+        $view->setData($dataset);
 
         // set views
         $view->setView('_content');
         $view->setLayout('layout');
-        $output = $view->__invoke(); // or just $view()
-
-
-
-
+        $output = $view->__invoke();
 
         //
         $this->response = $this->response->withHeader('Content-Type', 'text/html');
