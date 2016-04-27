@@ -102,21 +102,6 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
      * @return Response
      *
      */
-    public function __invokeX(
-        Request $request,
-        Response $response,
-        array $payload
-    ) {
-        $this->request = $request;
-        $this->response = $response;
-        if (isset($payload['success']) && true === $payload['success']) {
-            $this->success($payload);
-        } else {
-            $this->error($payload);
-        }
-        return $this->response;
-    }
-
     public function __invoke(
         Request $request,
         Response $response,
@@ -126,7 +111,7 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         $this->response = $response;
         $this->payload = $payload;
         $method = $this->getMethodForPayload();
-        $this->$method();                                   ///////////
+        $this->$method();
         return $this->response;
     }
 
@@ -147,9 +132,13 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         return method_exists($this, $method) ? $method : 'unknown';
     }
 
-
-
-    //
+    /**
+     *
+     * Returns the Responder method to call, based on the Payload status.
+     *
+     * @return string
+     *
+     */
     protected function htmlBody($data)
     {
 
@@ -167,8 +156,7 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         // partial view
         $view_registry = $view->getViewRegistry();
         // $partial = $this->request->getAttribute('_content');
-        $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']); // set partial view main content file as dynamic partial
-
+        $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
         $dataset = [
             'data' => $data, // passing data array to view
             'partial' => 'partial', // passing partial view filename as string to layout
@@ -181,11 +169,7 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         $view->setLayout('layout');
         $output = $view->__invoke(); // or just $view()
 
-
-
-
-
-        //
+        // set response
         $this->response = $this->response->withHeader('Content-Type', 'text/html');
         $this->response->getBody()->write($output);
     }
