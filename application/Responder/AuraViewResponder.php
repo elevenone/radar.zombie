@@ -130,9 +130,23 @@ class AuraViewResponder implements ResponderAcceptsInterface
         // add templates to the view registry
         $view_registry = $view->getViewRegistry();
 
+		// if it is not an ajax request render main layout file
+		if( ! $this->is_pjax() )
+		{
+			//
+			echo 'aaa';
+	        $layout_registry = $view->getLayoutRegistry();
+	        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
+		}
+		// else
+		// {
+			//
+			// echo 'bbb';
+		// }
+
         // main view
-        $layout_registry = $view->getLayoutRegistry();
-        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
+        // $layout_registry = $view->getLayoutRegistry();
+        // $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
 
         // partial view
         $view_registry = $view->getViewRegistry();
@@ -156,6 +170,23 @@ class AuraViewResponder implements ResponderAcceptsInterface
         $this->response = $this->response->withHeader('Content-Type', 'text/html');
         $this->response->getBody()->write($output);
     }
+
+	/**
+	 * Checks for ajax request
+	 * @return bool
+	 */
+	protected function is_pjax()
+	{
+		//echo '1___';
+		// if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+		if(isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == 'true')
+		{
+			echo 'pjax = true';
+			return TRUE;
+		}
+		echo 'pjax = false';
+		return FALSE;
+	}
 
     /**
      *
