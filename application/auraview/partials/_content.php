@@ -1,7 +1,7 @@
 <hr/>
 CONTENT<br/>
 <?php
-var_dump($this->data);
+var_dump($this);
 // print_r($this->data);
 
 

@@ -17,7 +17,7 @@ class HelloPayload
         return $payload
             ->setStatus(PayloadStatus::SUCCESS)
             ->setOutput([
-                'phrase' => 'Hello from ' . __CLASS__ . '   ' . $input['name']
+                'phrase' => 'Hello from ' . __CLASS__ . '   ' . $input['page']
             ]);
                 
 

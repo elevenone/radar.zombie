@@ -20,6 +20,8 @@ use Relay\Middleware\ResponseSender;
 use Zend\Diactoros\Response as Response;
 use Portfolio\Domain\Entity\Post as PostEntity;
 
+// use Whoops\Run;
+
 /**
  *
  * DI container configuration for Radar classes.
@@ -71,6 +73,11 @@ class Application extends ContainerConfig
         $adr->middle(new ExceptionHandler(new Response()));
         $adr->middle('Radar\Adr\Handler\RoutingHandler');
         $adr->middle('Radar\Adr\Handler\ActionHandler');
+		//
+
+		// $adr->middle(new Whoops\Run());
+		// $container->register(new \WhoopsPimple\WhoopsServiceProvider);
+
 
         /**
          * Input
@@ -105,7 +112,7 @@ class Application extends ContainerConfig
         // static page views route
         $adr->get('staticpage', '/page/{page}?', \Application\Domain\Hello::class)
             // ->input('Application\Input\MergedArray')
-            // ->responder('Application\Responder\AuraViewResponder')
+            ->responder('Application\Responder\AuraViewPayloadResponder')
             ->defaults(['page' => 'mikka']);
 
 
@@ -120,10 +127,10 @@ class Application extends ContainerConfig
             ->defaults(['name' => 'world']);
 
 		// the responder here uses aura.payload object from the action
-        $adr->get('index2', '/payload/{name}?', \Application\Domain\HelloPayload::class)
+        $adr->get('index2', '/payload/{page}?', \Application\Domain\HelloPayload::class)
             // ->input('Application\Input\NoneExpected')
             ->responder('Application\Responder\AuraViewPayloadResponder')
-            ->defaults(['name' => 'world']);
+            ->defaults(['page' => 'mikka']);
 
     }
 

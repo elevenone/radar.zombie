@@ -149,15 +149,24 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
         // add templates to the view registry
         $view_registry = $view->getViewRegistry();
 
-        // main view
-        $layout_registry = $view->getLayoutRegistry();
-        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
+		// main view
+        // render main layout file only if the request is NOT a pjax request
+        if( ! $this->is_pjax() )
+        {
+            // main view
+            $layout_registry = $view->getLayoutRegistry();
+            $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
+        }
 
         // partial view
         $view_registry = $view->getViewRegistry();
         $partial = $this->request->getAttribute('_content');
-        // $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
-		$view_registry->set('_content', $this->path . $partial . '.php');
+        // ok
+		// $view_registry->set('_content', $this->path . $this->views['views']['partials']['content']);
+
+		// dynamic partial
+        $partial = $this->request->getAttribute('page');
+        $view_registry->set('_content', $this->path . '/partials/_' . $partial . '.php');
 
         $dataset = [
             'data' => $data, // passing data array to view
