@@ -12,7 +12,8 @@
         "relay/middleware": "~1.0",
         "josegonzalez/dotenv": "~1.0",
         "zendframework/zend-diactoros": "~1.0",
-        "aura/view": "^2.2"
+        "aura/view": "^2.2",
+        "filp/whoops": "^2.1"
     },
     "autoload": {
         "psr-4": {
