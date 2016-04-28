@@ -9,8 +9,9 @@
 <pre>
 
 
-<?php require $this->partial ?>
-<?php require 'partials/_content.php' ?>
+<?php echo $this->getContent(); ?>
+<?php // require $this->partial ?>
+<?php // require 'partials/_content.php' ?>
 
 
 </pre>
