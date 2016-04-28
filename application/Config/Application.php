@@ -52,6 +52,7 @@ class Application extends ContainerConfig
         $views = $viewsconfig->getViews();
 
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
+        $di->params['Application\Responder\AuraViewStatic']['views'] = $views;
         $di->params['Application\Responder\AuraViewPayloadResponder']['views'] = $views;
     }
 
@@ -95,6 +96,7 @@ class Application extends ContainerConfig
          */
 
         // demo route
+        /*
         $adr->get('Hello', '/hello/{name}?', function (array $input) {
                 $payload = new Payload();
                 return $payload
@@ -104,15 +106,15 @@ class Application extends ContainerConfig
                     ]);
             })
             ->defaults(['name' => 'world']);
-
+        */
 
 
         // app routes
 
         // static page views route
-        $adr->get('staticpage', '/page/{page}?', \Application\Domain\Hello::class)
+        $adr->get('staticpage', '/page/{page}?', \Application\Domain\HelloPayload::class)
             // ->input('Application\Input\MergedArray')
-            ->responder('Application\Responder\AuraViewPayloadResponder')
+            ->responder('Application\Responder\AuraViewStatic')
             ->defaults(['page' => 'mikka']);
 
 
