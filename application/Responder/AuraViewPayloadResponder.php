@@ -166,7 +166,7 @@ class AuraViewPayloadResponder implements ResponderAcceptsInterface
 
 		// dynamic partial
         $partial = $this->request->getAttribute('page');
-        $view_registry->set('_content', $this->path . '/partials/_' . $partial . '.php');
+        $view_registry->set('_content', $this->path . '/staticPages/_' . $partial . '.php');
 
         $dataset = [
             'data' => $data, // passing data array to view
