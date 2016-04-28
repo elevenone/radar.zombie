@@ -24,7 +24,7 @@ use Radar\Adr\Responder\ResponderAcceptsInterface;
  * @package radar.zombie
  *
  */
-class AuraViewStatic implements ResponderAcceptsInterface
+class AuraViewStaticPage implements ResponderAcceptsInterface
 {
     /**
      * The domain payload (i.e. the output from the domain).
@@ -158,16 +158,11 @@ class AuraViewStatic implements ResponderAcceptsInterface
         // partial view
         $view_registry = $view->getViewRegistry();
 
-        $partial = $this->path . '/partials/_' . $this->request->getAttribute('page') . '.php';
+        $slug = $this->request->getAttribute('page');
+        $partial = $this->path . '/staticPages/_' . $slug . '.php';
+        $view_registry->set('_content', $partial);
 
-        if (!file_exists( $partial ))
-        {
-            $this->payload->setStatus('NOT_FOUND');
-            // $this->response = $this->response->withStatus(404);
-        } else {
-            $view_registry->set('_content', $partial);
-        }
-
+        // set data
         $dataset = [
             'data' => $data, // passing data array to view
             'partial' => 'partial', // passing partial view filename as string to layout
