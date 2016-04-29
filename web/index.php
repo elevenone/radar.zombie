@@ -1,12 +1,12 @@
 <?php
 
 require dirname(__DIR__) . '/system/autoload.php';
-require dirname(__DIR__) . '/application/boot.php';
 
 
+
+//
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
-
 
 $run     = new Run();
 $handler = new PrettyPageHandler();
@@ -24,3 +24,8 @@ $run->pushHandler(function ($exception, $inspector, $run) {
 $run->register();
 
 
+
+//
+require dirname(__DIR__) . '/application/boot.php';
+
+// eof
