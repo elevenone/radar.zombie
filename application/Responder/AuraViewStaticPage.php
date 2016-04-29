@@ -17,6 +17,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Radar\Adr\Responder\ResponderAcceptsInterface;
 
 
+
 /**
  *
  * Aura view Responder.
@@ -51,16 +52,30 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
      */
     protected $views;
 
-	/**
+    /**
      * __construct
      * @param array $rules Map of rules
      * @access public
      */
-	// todo // get an array with the files
+    // todo // get an array with the files
     public function __construct($views) // $viewDir
     {
+        // views array
         $this->views = $views;
-        $this->path = $this->views['views']['path'];
+
+        // view filepaths from $views array
+        // template root path
+        $this->template_path = $views['views']['path'];
+
+        // layout view file
+        $this->layout = $this->template_path . $views['views']['layout'];
+
+        // staticpages path
+        $this->staticpages = $views['views']['staticpages_path'] . '/_';
+        // print_r( $this->staticpages );
+
+        // partials path // _content.php // NOT USED HERE FOR NOW
+        // $this->partials_path = $views['views']['partials_path'];
     }
 
     /**
@@ -118,15 +133,15 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
 
         // layout
         $layout_registry = $view->getLayoutRegistry();
-        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
+        $layout_registry->set('layout', $this->layout);
 
         // views
         $view_registry = $view->getViewRegistry();
 
         // get slug for partial view
         $slug = $this->request->getAttribute('page');
-        $partial = $this->path . '/staticPages/_' . $slug . '.php';
-        $view_registry->set('_content', $partial);
+        $partial_view = $this->staticpages . $slug . '.php';
+        $view_registry->set('_content', $partial_view);
 
         // set data
         $dataset = [
