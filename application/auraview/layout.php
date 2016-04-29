@@ -27,28 +27,33 @@
 <body>
 
 
-<?php require 'partials/_header.php' ?>
+
 <pre>
 
-	<section id="main">
-		<h1>PJAX using PHP</h1>
-
-		<?php echo $this->getContent(); ?>
-
-		<?php 
-		$imhome = true;
-		include("status.php");
-		echo $what;
-		?>
-
-	</section>
 
 
+<?php require 'partials/_header.php' ?>
+
+
+
+<section id="main">
+
+
+
+        <?php echo $this->getContent(); ?>
+
+
+
+</section>
+
+
+
+<?php require 'partials/_footer.php' ?>
 
 
 
 </pre>
-<?php require 'partials/_footer.php' ?>
+
 
 
 </body>

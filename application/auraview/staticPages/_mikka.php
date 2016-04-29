@@ -1,10 +1,2 @@
 <hr/>
-MIKKA<br/>
-sad2345wet
-ewrtre
-wtr
-ewty
-rewy
-trey
-ertyu
-ertuy
+MIKKA 1<br/>
