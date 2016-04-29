@@ -48,24 +48,14 @@ class Application extends ContainerConfig
         /**
          * Aura.view
          */
-        $di->params['Aura\View\View'] = array(
-            'view_registry'   => $di->lazyNew('Aura\View\TemplateRegistry'),
-            'layout_registry' => $di->lazyNew('Aura\View\TemplateRegistry'),
-            'helpers'         => $di->lazyNew('Aura\View\HelperRegistry'),
-        );
-
         // view files and paths from class
         $viewsconfig = new \Application\Config\AuraViews;
         $views = $viewsconfig->getViews();
 
-        // $di->params['Radar\Adr\Handler\RoutingHandler']['matcher'] = $di->lazyGetCall('radar/adr:router', 'getMatcher');
-
-        // static page responder
+        // binding variables to classes
         $di->params['Application\Responder\AuraViewStaticPage']['views'] = $views;
-
-        //
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
-        $di->params['Application\Responder\AuraViewPayloadResponder']['views'] = $views;
+
     }
 
     /**
