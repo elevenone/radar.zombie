@@ -33,17 +33,8 @@
 
 
 <?php require 'partials/_header.php' ?>
-
-
-
 <section id="main">
-
-
-
-        <?php echo $this->getContent(); ?>
-
-
-
+<?php echo $this->getContent(); ?>
 </section>
 
 
