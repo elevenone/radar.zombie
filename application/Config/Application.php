@@ -52,12 +52,10 @@ class Application extends ContainerConfig
         $viewsconfig = new \Application\Config\AuraViews;
         $views = $viewsconfig->getViews();
 
-        $di->params['Radar\Adr\Handler\RoutingHandler']['matcher'] = $di->lazyGetCall('radar/adr:router', 'getMatcher');
+        // $di->params['Radar\Adr\Handler\RoutingHandler']['matcher'] = $di->lazyGetCall('radar/adr:router', 'getMatcher');
 
         // static page responder
         $di->params['Application\Responder\AuraViewStaticPage']['views'] = $views;
-
-
 
         //
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
@@ -97,7 +95,7 @@ class Application extends ContainerConfig
         /**
          * Responder
          */
-        // $adr->responder('Application\Responder\AuraViewResponder');
+        $adr->responder('Application\Responder\AuraViewResponder');
 
         /**
          * Routes
@@ -121,6 +119,19 @@ class Application extends ContainerConfig
 
         /**
          *
+         * Index page route
+         *
+         */
+		// $adr->get('index.page', '/{name}?', \Application\Domain\Hello::class)
+//        $adr->get('index.page', '/', \Application\Domain\Hello::class)
+            // ->input('Application\Input\MergedArray')
+            // ->responder('Application\Responder\AuraViewResponder')
+//            ->defaults([
+//					'name' => 'mikka'
+//				]);
+
+        /**
+         *
          * Static page views route
          *
          * @param input:
@@ -129,39 +140,25 @@ class Application extends ContainerConfig
          * @return tokens: the allowed values
          *
          */
-        $adr->get('staticpage', '/page/{page}?', \Application\Domain\HelloPayload::class)
+		// $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
+        $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
             ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
-            ->defaults(['page' => 'mikka'])
+            ->defaults([
+					'page' => 'mikka'
+				])
             ->tokens([
-                    'page' => '|mikka|mikka2|mikka3'
-                ]);
+					'page' => '|mikka|mikka2|mikka3'
+				]);
 
 
 
-
-
-        // $adr->get('site.index', '/class/{name}?', ['Application\Domain\Index', '_invoke'])
-        //     ->defaults(['name' => 'mikkamakka']);
-
-        // the responder here uses an array from the action
-        $adr->get('index', '/{name}?', \Application\Domain\Hello::class)
-            // ->input('Application\Input\NoneExpected')
-            // ->responder('Portfolio\Delivery\Responder\AuraViewResponder')
-            ->defaults(['name' => 'world']);
-
-        // the responder here uses aura.payload object from the action
-        $adr->get('index2', '/payload/{page}?', \Application\Domain\HelloPayload::class)
-            // ->input('Application\Input\NoneExpected')
-            ->responder('Application\Responder\AuraViewPayloadResponder')
-            ->defaults(['page' => 'mikka'])
-            ->tokens([
-                    'page' => '|mikka|mikka2|mikka3'
-                ]);
 
     }
 
 
+
+	//
     public function modifyRouter(Container $di)
         {
             $router = $di->get('radar/web-kernel:router');
