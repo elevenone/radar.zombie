@@ -71,7 +71,7 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
         $this->layout = $this->template_path . $views['views']['layout'];
 
         // staticpages path
-        $this->staticpages = $views['views']['staticpages_path'] . '/_';
+        $this->staticpages = $views['views']['staticpages_path'] . '/__';
         // print_r( $this->staticpages );
 
         // partials path // _content.php // NOT USED HERE FOR NOW

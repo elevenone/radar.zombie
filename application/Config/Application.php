@@ -13,13 +13,13 @@ namespace Application\Config;
 use PDO;
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
-// use Aura\Payload\Payload;
-// use Aura\Payload_Interface\PayloadStatus;
+use Aura\Payload\Payload; // demo route
+use Aura\Payload_Interface\PayloadStatus; // demo route
 use Relay\Middleware\ExceptionHandler;
 use Relay\Middleware\ResponseSender;
 use Zend\Diactoros\Response as Response;
 
-// use Whoops\Run;
+
 
 /**
  *
@@ -48,6 +48,7 @@ class Application extends ContainerConfig
         /**
          * Aura.view
          */
+
         // view files and paths from class
         $viewsconfig = new \Application\Config\AuraViews;
         $views = $viewsconfig->getViews();
@@ -55,7 +56,6 @@ class Application extends ContainerConfig
         // binding variables to classes
         $di->params['Application\Responder\AuraViewStaticPage']['views'] = $views;
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
-
     }
 
     /**
@@ -91,40 +91,27 @@ class Application extends ContainerConfig
         /**
          * Responder
          */
-        $adr->responder('Application\Responder\AuraViewResponder');
+        // $adr->responder('Application\Responder\AuraViewResponder');
+
+
 
         /**
          * Routes
          */
 
-        // demo route
-        /*
-        $adr->get('Hello', '/hello/{name}?', function (array $input) {
-                $payload = new Payload();
-                return $payload
-                    ->setStatus(PayloadStatus::SUCCESS)
-                    ->setOutput([
-                        'phrase' => 'Hello ' . $input['name']
-                    ]);
-            })
-            ->defaults(['name' => 'world']);
-        */
 
-
-        // app routes
 
         /**
          *
          * Index page route
          *
          */
-		// $adr->get('index.page', '/{name}?', \Application\Domain\Hello::class)
-//        $adr->get('index.page', '/', \Application\Domain\Hello::class)
-            // ->input('Application\Input\MergedArray')
-            // ->responder('Application\Responder\AuraViewResponder')
-//            ->defaults([
-//					'name' => 'mikka'
-//				]);
+        $adr->get('index.page', '/{page}?', \Application\Domain\HelloPayload::class)
+            ->input('Application\Input\MergedArray')
+            ->responder('Application\Responder\AuraViewStaticPage')
+            ->defaults([
+                'page' => 'index'
+            ]);
 
         /**
          *
@@ -136,41 +123,16 @@ class Application extends ContainerConfig
          * @return tokens: the allowed values
          *
          */
-		// $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
-        $adr->get('static.page', '/page{/page}', \Application\Domain\HelloPayload::class)
+        $adr->get('static.page', '/page/{page}?', \Application\Domain\HelloPayload::class)
             ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
             ->defaults([
-					'page' => 'mikka'
-				])
+                'page' => 'mikka'
+            ])
             ->tokens([
-					'page' => '|mikka|mikka2|mikka3'
-				]);
-
-
-
+                'page' => '|mikka|mikka2|mikka3'
+            ]);
 
     }
-
-
-
-	//
-    public function modifyRouter(Container $di)
-        {
-            $router = $di->get('radar/web-kernel:router');
-            
-            $router->add('aura.blog.browse', '/blog{/page}')
-                        ->setValues(array(
-                            'action' => 'aura.blog.browse',
-                            'page' => 1
-                        ))
-                        ->addTokens(array(
-                            'page'  => '\d+',
-                        ));
-
-
-            
-        }
-
 
 }
