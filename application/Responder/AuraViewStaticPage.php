@@ -1,6 +1,6 @@
 <?php
 /**
- * Static view responder
+ * Static view responder using aura payload
  *
  * @category Responder
  * @package  Application
