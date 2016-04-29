@@ -48,6 +48,12 @@ class Application extends ContainerConfig
         /**
          * Aura.view
          */
+        $di->params['Aura\View\View'] = array(
+            'view_registry'   => $di->lazyNew('Aura\View\TemplateRegistry'),
+            'layout_registry' => $di->lazyNew('Aura\View\TemplateRegistry'),
+            'helpers'         => $di->lazyNew('Aura\View\HelperRegistry'),
+        );
+
         // view files and paths from class
         $viewsconfig = new \Application\Config\AuraViews;
         $views = $viewsconfig->getViews();
@@ -141,7 +147,7 @@ class Application extends ContainerConfig
          *
          */
 		// $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
-        $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
+        $adr->get('static.page', '/page{/page}', \Application\Domain\HelloPayload::class)
             ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
             ->defaults([
