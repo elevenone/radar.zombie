@@ -3,7 +3,7 @@
  * Static view responder
  *
  * @category Responder
- * @package  aaa
+ * @package  Application
  *
  */
 namespace Application\Responder;
@@ -112,32 +112,21 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
      */
     protected function htmlBody($data)
     {
-
         // Aura.view setup
         $view_factory = new ViewFactory;
         $view = $view_factory->newInstance();
 
-       	// get view registrys
+        // layout
         $layout_registry = $view->getLayoutRegistry();
-		$view_registry = $view->getViewRegistry();
+        $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
 
-		// get slug for partial view
-		$slug = $this->request->getAttribute('page');
-		$partial = $this->path . '/staticPages/_' . $slug . '.php';
+        // views
+        $view_registry = $view->getViewRegistry();
 
-        // main view
-        // render main layout file only if the request is NOT a pjax request
-		// add templates to the view registry
-        if( $this->is_pjax() )
-        {
-			$view_registry->set('_content', $partial);
-        } else {
-			$layout_registry->set('layout', $this->path . $this->views['views']['layout']);
-        	$view_registry->set('_content', $partial);
-        }
-		// $layout_registry->set('layout', $this->path . $this->views['views']['layout']);
-        // partial view
-        // $view_registry->set('_content', $partial);
+        // get slug for partial view
+        $slug = $this->request->getAttribute('page');
+        $partial = $this->path . '/staticPages/_' . $slug . '.php';
+        $view_registry->set('_content', $partial);
 
         // set data
         $dataset = [
@@ -148,17 +137,23 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
         // assign data to view
         $view->setData($dataset);
 
-        // set views
-        $view->setView('_content');
-        $view->setLayout('layout');
+        // check for ajax request and set views accordingly
+        if ( $this->is_pjax() )
+        {
+            // pjax request, set the view only
+            $view->setView('_content');
+        } else {
+            // regular http request, set view and layout
+            $view->setLayout('layout');
+            $view->setView('_content');
+        }
+
         $output = $view->__invoke();
 
         // retun response
         $this->response = $this->response->withHeader('Content-Type', 'text/html');
         $this->response->getBody()->write($output);
-
     }
-
 
     /**
      * Checks for ajax request
@@ -170,18 +165,10 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
 
         if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
         {
-            echo 'pjax PSR-7 = true';
-            echo '<pre>';
             $serverparams = $this->request->getServerParams();
-            print_r($serverparams['HTTP_X_PJAX']);
-            echo '</pre>';
             return TRUE;
         }
-        // echo 'pjax PSR-7 = false';
-        // echo '<pre>';
         $serverparams = $this->request->getServerParams();
-        // print_r($serverparams['HTTP_X_PJAX']);
-        // echo '</pre>';
         return FALSE;
     }
 
