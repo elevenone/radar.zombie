@@ -31,7 +31,23 @@ use Zend\Diactoros\Response as Response;
 class Application extends ContainerConfig
 {
     private $views;
-    
+
+    /**
+     * Define Aura\View and Aura\Html factories and services
+     *
+     * @param Container $di DI Container
+     *
+     * @return void
+     *
+     * @access public
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     */
+    public function definexxx(Container $di)
+    {
+
+    }
+
     /**
      *
      * Defines params, setters, values, etc. in the Container.
@@ -48,6 +64,33 @@ class Application extends ContainerConfig
         /**
          * Aura.view
          */
+        // Aura\Html
+        $di->set(
+            'aura/html:factory',
+            $di->lazyNew(HelperLocatorFactory::class)
+        );
+        $di->set(
+            'aura/html:helpers',
+            $di->lazyGetCall(
+                'aura/html:factory',
+                'newInstance'
+            )
+        );
+
+        // Aura\View
+        $di->set(
+            'aura/view:factory',
+            $di->lazyNew(ViewFactory::class)
+        );
+        $di->set(
+            'aura/view:view',
+            $di->lazyGetCall(
+                'aura/view:factory',
+                'newInstance',
+                $di->lazyGet('aura/html:helpers')
+            )
+        );
+
 
         // view files and paths from class
         $viewsconfig = new \Application\Config\AuraViews;
@@ -123,14 +166,14 @@ class Application extends ContainerConfig
          * @return tokens: the allowed values
          *
          */
-        $adr->get('static.page', '/page/{page}?', \Application\Domain\HelloPayload::class)
+        $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
             ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
             ->defaults([
-                'page' => 'mikka'
+                'page' => 'index'
             ])
             ->tokens([
-                'page' => '|mikka|mikka2|mikka3'
+                'page' => '|index|mikka|mikka2|mikka3'
             ]);
 
     }
