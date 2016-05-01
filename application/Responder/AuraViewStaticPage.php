@@ -25,7 +25,8 @@ use Radar\Adr\Responder\ResponderAcceptsInterface;
  * @package radar.zombie
  *
  */
-class AuraViewStaticPage implements ResponderAcceptsInterface
+// class AuraViewStaticPage implements ResponderAcceptsInterface
+class AuraViewStaticPage extends AbstractResponder
 {
     /**
      * The domain payload (i.e. the output from the domain).
@@ -71,7 +72,7 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
         $this->layout = $this->template_path . $views['views']['layout'];
 
         // staticpages path
-        $this->staticpages = $views['views']['staticpages_path'] . '/__';
+        $this->staticpages = $views['views']['staticpages_path'] . DIRECTORY_SEPARATOR . '__';
         // print_r( $this->staticpages );
 
         // partials path // _content.php // NOT USED HERE FOR NOW
@@ -104,21 +105,12 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
         $this->payload = $payload;
         $method = $this->getMethodForPayload();
         $this->$method();
+//        if ( PayloadStatus::SUCCESS ) {
+            // $this->success($payload);
+//        } else {
+            // $this->error($payload);
+//        }
         return $this->response;
-    }
-
-    /**
-     * Returns the Responder method to call, based on the Payload status.
-     * @return string
-     */
-    protected function getMethodForPayload()
-    {
-        if (! $this->payload) {
-            return 'noContent';
-        }
-
-        $method = str_replace('_', '', strtolower($this->payload->getStatus()));
-        return method_exists($this, $method) ? $method : 'unknown';
     }
 
     /**
@@ -141,18 +133,34 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
         // get slug for partial view
         $slug = $this->request->getAttribute('page');
         $partial_view = $this->staticpages . $slug . '.php';
+
+        // check if the partial file really exists,
+        // if not throw an 404 error instead or aura view template not found
+        if( ! file_exists($partial_view) )
+        {
+            $this->response = $this->response->withStatus(404);
+            $partial_view = $this->staticpages . 'error' . '.php';
+        }
+
+        // set the registy
         $view_registry->set('_content', $partial_view);
 
+        /*
+         * assign data to the view
+         */
         // set data
         $dataset = [
             'data' => $data, // passing data array to view
             'partial' => 'partial', // passing partial view filename as string to layout
+            'debug' => $this->payload->getStatus(),
+            //'debugmessage ' => $this->debugmessage,
         ];
 
-        // assign data to view
         $view->setData($dataset);
 
-        // check for ajax request and set views accordingly
+        /*
+         * check for ajax request and set views accordingly
+         */
         if ( $this->is_pjax() )
         {
             // pjax request, set the view only
@@ -170,22 +178,7 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
         $this->response->getBody()->write($output);
     }
 
-    /**
-     * Checks for ajax request
-     * @return bool
-     */
-    protected function is_pjax()
-    {
-        $serverparams = $this->request->getServerParams();
 
-        if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
-        {
-            $serverparams = $this->request->getServerParams();
-            return TRUE;
-        }
-        $serverparams = $this->request->getServerParams();
-        return FALSE;
-    }
 
     /**
      * Builds a Response for PayloadStatus::SUCCESS.
@@ -202,7 +195,7 @@ class AuraViewStaticPage implements ResponderAcceptsInterface
     protected function error($payload)
     {
         $this->response = $this->response->withStatus(500);
-        $this->request = $this->request->withAttribute('_view', 'error.php');
+        $this->request = $this->request->withAttribute('page', 'error.php');
         $this->htmlBody($payload);
     }
 }
