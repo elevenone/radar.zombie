@@ -4,6 +4,7 @@ require dirname(__DIR__) . '/system/autoload.php';
 
 
 
+/*
 //
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -22,6 +23,7 @@ $run->pushHandler(function ($exception, $inspector, $run) {
     });
 });
 $run->register();
+*/
 
 
 

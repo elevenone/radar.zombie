@@ -138,6 +138,7 @@ class AuraViewStaticPage extends AbstractResponder
         // if not throw an 404 error instead or aura view template not found
         if( ! file_exists($partial_view) )
         {
+            // $this->notFound();
             $this->response = $this->response->withStatus(404);
             $partial_view = $this->staticpages . 'error' . '.php';
         }
@@ -188,6 +189,17 @@ class AuraViewStaticPage extends AbstractResponder
         $this->response = $this->response->withStatus(200);
         $this->htmlBody($this->payload->getOutput());
     }
+
+
+
+    protected function notFound()
+    {
+        $this->response = $this->response->withStatus(404);
+        $this->Body($this->payload->getInput());
+    }
+
+
+
 
     /**
      * Builds a Response for PayloadStatus::ERROR.
