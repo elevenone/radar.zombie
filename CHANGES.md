@@ -8,3 +8,11 @@
 
 
 // http://auraphp.com/framework/2.x/en/adr
+
+see
+https://github.com/kenjis/php-framework-benchmark/blob/master/radar-1.0-dev/docs/routing.md
+
+
+
+for now this is a complete mess
+

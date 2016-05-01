@@ -13,7 +13,9 @@
         "josegonzalez/dotenv": "~1.0",
         "zendframework/zend-diactoros": "~1.0",
         "aura/view": "^2.2",
-        "filp/whoops": "^2.1"
+        "filp/whoops": "^2.1",
+        "fusible/view-provider": "^1.0",
+        "jnjxp/viewd": "^0.1.0"
     },
     "autoload": {
         "psr-4": {

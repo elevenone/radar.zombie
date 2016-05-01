@@ -11,22 +11,14 @@ class HelloPayload
      * @param array $input
      * @return Payload
      */
-    public function __invoke(array $input)
+    public function __invoke()
     {
         $payload = new Payload();
         return $payload
             ->setStatus(PayloadStatus::SUCCESS)
             ->setOutput([
-                'phrase' => 'Hello from ' . __CLASS__ . '   ' . $input['page']
+                'message' => 'input is : ' . $input['page']
             ]);
-                
-
     }
 }
-
-
-
-// from http://nextat.co.jp/staff/archives/150
-
-
 

@@ -43,23 +43,14 @@ class Application extends ContainerConfig
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function definexxx(Container $di)
-    {
-
-    }
-
-    /**
-     *
-     * Defines params, setters, values, etc. in the Container.
-     *
-     * @param Container $di The DI container.
-     *
-     */
     public function define(Container $di)
     {
         /**
-         * Parameters
+         * Services
          */
+        $di->set('application/domain:postGateway', $di->lazyNew('Application\Data\Gateway\PostSqlite'));
+
+
 
         /**
          * Aura.view
@@ -96,9 +87,23 @@ class Application extends ContainerConfig
         $viewsconfig = new \Application\Config\AuraViews;
         $views = $viewsconfig->getViews();
 
+        /**
+         * Parameters
+         */
+
         // binding variables to classes
         $di->params['Application\Responder\AuraViewStaticPage']['views'] = $views;
+//        $di->params['Application\Responder\AuraViewStaticPage']['template_path'] = $views['views']['path'];
+//        $di->params['Application\Responder\AuraViewStaticPage']['layout'] = $views['views']['layout'];
+
+
+
+
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
+
+        // domains
+        $di->params['Application\Domain\Page']['postGateway'] = $di->lazyGet('application/domain:postGateway');
+
     }
 
     /**
@@ -150,11 +155,24 @@ class Application extends ContainerConfig
          *
          */
         $adr->get('index.page', '/{page}?', \Application\Domain\HelloPayload::class)
-            ->input('Application\Input\MergedArray')
+            // ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
             ->defaults([
                 'page' => 'index'
             ]);
+
+        // page from DB
+        $adr->get('db.page', '/dbpage{/page}?', \Application\Domain\Page::class)
+            ->input('Application\Input\Page')
+            ->responder('Application\Responder\AuraViewStaticPage')
+            ->defaults([
+                'page' => 'index'
+            ])
+            ->tokens([
+                'page' => '|index|mikka|mikka2|mikka3'
+            ]);
+
+
 
         /**
          *
