@@ -154,18 +154,24 @@ class Application extends ContainerConfig
          * Index page route
          *
          */
-        $adr->get('index.page', '/{page}?', \Application\Domain\HelloPayload::class)
+//        $adr->get('index.page', '/{page}?', \Application\Domain\HelloPayload::class)
+            // ->input('Application\Input\MergedArray')
+//            ->responder('Application\Responder\AuraViewStaticPage')
+//            ->defaults([
+//                'page' => 'index'
+//            ]);
+
+        // domain test route
+        $adr->get('aura.page', '/aura/{page}?', \Application\Domain\Aura::class)
             // ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
             ->defaults([
                 'page' => 'index'
+            ])
+            ->tokens([
+                'page' => '|index|mikka|mikka2|mikka3'
             ]);
 
-		// domain test route
-        $adr->get('test', '/test/{name}?', \Application\Domain\DomainTest::class);
-            // ->input('Application\Input\MergedArray')
-//            ->responder('Application\Responder\AuraViewStaticPage')
-//				->responder('Application\Responder\AuraViewStaticPage');
 
 
         // page from DB
@@ -191,15 +197,15 @@ class Application extends ContainerConfig
          * @return tokens: the allowed values
          *
          */
-        $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
-            ->input('Application\Input\MergedArray')
-            ->responder('Application\Responder\AuraViewStaticPage')
-            ->defaults([
-                'page' => 'index'
-            ])
-            ->tokens([
-                'page' => '|index|mikka|mikka2|mikka3'
-            ]);
+//        $adr->get('static.page', '/page{/page}?', \Application\Domain\HelloPayload::class)
+//            ->input('Application\Input\MergedArray')
+//            ->responder('Application\Responder\AuraViewStaticPage')
+//            ->defaults([
+//                'page' => 'index'
+//            ])
+//            ->tokens([
+//                'page' => '|index|mikka|mikka2|mikka3'
+//            ]);
 
     }
 

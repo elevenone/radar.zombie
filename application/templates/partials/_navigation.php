@@ -1,6 +1,19 @@
 navigation
 <hr/>
+aura
+<a href="/">home</a>
+<a href="/aura">page </a>
+<a href="/aura/">page /</a>
+<a href="/aura/mikka">mikka</a>
+<a href="/aura/mikka2">mikka 2</a>
+<a href="/aura/mikka3">mikka 3</a>
 
+
+
+
+
+
+<hr/>
 <a href="/">home</a>
 <a href="/page">page </a>
 <a href="/page/">page /</a>

@@ -39,6 +39,31 @@ abstract class AbstractResponder
     }
 
     /**
+     * Builds a Response for PayloadStatus::SUCCESS.
+     */
+    protected function success()
+    {
+        $this->response = $this->response->withStatus(200);
+        $this->htmlBody($this->payload->getOutput());
+    }
+
+    protected function notFound()
+    {
+        $this->response = $this->response->withStatus(404);
+        $this->Body($this->payload->getInput());
+    }
+
+    /**
+     * Builds a Response for PayloadStatus::ERROR.
+     */
+    protected function error($payload)
+    {
+        $this->response = $this->response->withStatus(500);
+        $this->request = $this->request->withAttribute('page', 'error.php');
+        $this->htmlBody($payload);
+    }
+
+    /**
      * Checks for ajax request
      * @return bool
      */

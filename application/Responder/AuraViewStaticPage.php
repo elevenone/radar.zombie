@@ -6,6 +6,7 @@
  * @package  Application
  *
  */
+
 namespace Application\Responder;
 
 use Aura\Payload_Interface\PayloadInterface;
@@ -15,8 +16,6 @@ use Aura\View\ViewFactory as ViewFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Radar\Adr\Responder\ResponderAcceptsInterface;
-
-
 
 /**
  *
@@ -61,22 +60,17 @@ class AuraViewStaticPage extends AbstractResponder
     // todo // get an array with the files
     public function __construct($views) // $viewDir
     {
-        // views array
+        // view filepaths from $views array
         $this->views = $views;
 
-        // view filepaths from $views array
         // template root path
         $this->template_path = $views['views']['path'];
 
         // layout view file
         $this->layout = $this->template_path . $views['views']['layout'];
 
-        // staticpages path
+        // staticpages path. The __ underscores are for safety, for not including a file defined from url
         $this->staticpages = $views['views']['staticpages_path'] . DIRECTORY_SEPARATOR . '__';
-        // print_r( $this->staticpages );
-
-        // partials path // _content.php // NOT USED HERE FOR NOW
-        // $this->partials_path = $views['views']['partials_path'];
     }
 
     /**
@@ -119,6 +113,20 @@ class AuraViewStaticPage extends AbstractResponder
      */
     protected function htmlBody($data)
     {
+        //
+        // $slug = 'error';
+        if (isset($data)) {
+            $slug = $this->request->getAttribute('page');
+            // $this->request = $this->request->withAttribute('page', 'error.php');
+            //setup views
+//            $this->loadTemplate();
+//            $template = $this->twig->loadTemplate($view);
+//            $body = $template->render($data);
+//            $this->response = $this->response->withHeader('Content-Type', 'text/html');
+//            $this->response->getBody()->write($body);
+        }
+
+// set thir probaly fro config file
         // Aura.view setup
         $view_factory = new ViewFactory;
         $view = $view_factory->newInstance();
@@ -130,15 +138,17 @@ class AuraViewStaticPage extends AbstractResponder
         // views
         $view_registry = $view->getViewRegistry();
 
-        // get slug for partial view
         $slug = $this->request->getAttribute('page');
         $partial_view = $this->staticpages . $slug . '.php';
 
-        // check if the partial file really exists,
-        // if not throw an 404 error instead or aura view template not found
-        if( ! file_exists($partial_view) )
+        /*
+         * check if the partial file exists,
+         * and throw an 404 error if aura view template not found
+         * NOTE: if /{name} route is not defined then this check is obsolete
+         * if the wiev and template files are in their places
+         */
+        if(!file_exists($partial_view))
         {
-            // $this->notFound();
             $this->response = $this->response->withStatus(404);
             $partial_view = $this->staticpages . 'error' . '.php';
         }
@@ -179,35 +189,4 @@ class AuraViewStaticPage extends AbstractResponder
         $this->response->getBody()->write($output);
     }
 
-
-
-    /**
-     * Builds a Response for PayloadStatus::SUCCESS.
-     */
-    protected function success()
-    {
-        $this->response = $this->response->withStatus(200);
-        $this->htmlBody($this->payload->getOutput());
-    }
-
-
-
-    protected function notFound()
-    {
-        $this->response = $this->response->withStatus(404);
-        $this->Body($this->payload->getInput());
-    }
-
-
-
-
-    /**
-     * Builds a Response for PayloadStatus::ERROR.
-     */
-    protected function error($payload)
-    {
-        $this->response = $this->response->withStatus(500);
-        $this->request = $this->request->withAttribute('page', 'error.php');
-        $this->htmlBody($payload);
-    }
 }
