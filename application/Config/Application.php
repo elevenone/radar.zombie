@@ -90,15 +90,14 @@ class Application extends ContainerConfig
         /**
          * Parameters
          */
+        // lazy load
+        $di->params['Application\Domain\Aura']['payload'] = $di->lazyNew('Aura\Payload\Payload');
 
         // binding variables to classes
         $di->params['Application\Responder\AuraViewStaticPage']['views'] = $views;
-//        $di->params['Application\Responder\AuraViewStaticPage']['template_path'] = $views['views']['path'];
-//        $di->params['Application\Responder\AuraViewStaticPage']['layout'] = $views['views']['layout'];
 
 
-
-
+        // refactor or drop this
         $di->params['Application\Responder\AuraViewResponder']['views'] = $views;
 
         // domains
@@ -154,12 +153,12 @@ class Application extends ContainerConfig
          * Index page route
          *
          */
-//        $adr->get('index.page', '/{page}?', \Application\Domain\HelloPayload::class)
+        $adr->get('index.page', '/', \Application\Domain\HelloPayload::class)
             // ->input('Application\Input\MergedArray')
-//            ->responder('Application\Responder\AuraViewStaticPage')
-//            ->defaults([
-//                'page' => 'index'
-//            ]);
+            ->responder('Application\Responder\AuraViewStaticPage')
+            ->defaults([
+                'page' => 'index'
+            ]);
 
         // domain test route
         $adr->get('aura.page', '/aura/{page}?', \Application\Domain\Aura::class)
