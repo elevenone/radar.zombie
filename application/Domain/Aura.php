@@ -15,7 +15,7 @@ class Aura
     public function __invoke(array $input)
     {
 
-        $page = 'index';
+        $page = 'indexx';
         if (!empty($input['page'])) {
             $page = $input['page'];
         }
@@ -23,7 +23,7 @@ class Aura
         return $this->payload
             ->setStatus('SUCCESS')
             ->setOutput([
-                'hello' => $page,
+                'slug' => $page,
             ]);
     }
 

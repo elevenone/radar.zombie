@@ -99,6 +99,13 @@ class AuraViewStaticPage extends AbstractResponder
         $this->payload = $payload;
         $method = $this->getMethodForPayload();
         $this->$method();
+        
+        // https://github.com/auraphp/Aura.Payload/blob/3.x/docs/index.md
+
+//         if($this->payload->getStatus())
+//        {
+            
+//         }
 //        if ( PayloadStatus::SUCCESS ) {
             // $this->success($payload);
 //        } else {
@@ -116,7 +123,12 @@ class AuraViewStaticPage extends AbstractResponder
         //
         // $slug = 'error';
         if (isset($data)) {
-            $slug = $this->request->getAttribute('page');
+
+            // $slug = $this->request->getAttribute('page');
+            $slugFromPayload = $this->payload->getOutput();
+            $slug = $slugFromPayload['slug'];
+
+
             // $this->request = $this->request->withAttribute('page', 'error.php');
             //setup views
 //            $this->loadTemplate();
