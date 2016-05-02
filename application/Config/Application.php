@@ -161,6 +161,13 @@ class Application extends ContainerConfig
                 'page' => 'index'
             ]);
 
+		// domain test route
+        $adr->get('test', '/test/{name}?', \Application\Domain\DomainTest::class);
+            // ->input('Application\Input\MergedArray')
+//            ->responder('Application\Responder\AuraViewStaticPage')
+//				->responder('Application\Responder\AuraViewStaticPage');
+
+
         // page from DB
         $adr->get('db.page', '/dbpage{/page}?', \Application\Domain\Page::class)
             ->input('Application\Input\Page')
