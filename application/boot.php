@@ -10,7 +10,7 @@ use Relay\Middleware\ExceptionHandler;
 use Relay\Middleware\ResponseSender;
 use Zend\Diactoros\Response as Response;
 use Zend\Diactoros\ServerRequestFactory as ServerRequestFactory;
-
+// use Jnjxp\Routeless\Config as RoutlessConfig;
 
 
 /**
@@ -20,7 +20,8 @@ $boot = new Boot();
 
 // boot adr with Config
 $adr = $boot->adr([
-    'Application\Config\Application',
+    Application\Config\Application::class,
+	Jnjxp\Routeless\Config::class
     // 'Application\\Config\\Routes',
 ]);
 

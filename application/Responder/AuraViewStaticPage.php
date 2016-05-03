@@ -99,18 +99,6 @@ class AuraViewStaticPage extends AbstractResponder
         $this->payload = $payload;
         $method = $this->getMethodForPayload();
         $this->$method();
-        
-        // https://github.com/auraphp/Aura.Payload/blob/3.x/docs/index.md
-
-//         if($this->payload->getStatus())
-//        {
-            
-//         }
-//        if ( PayloadStatus::SUCCESS ) {
-            // $this->success($payload);
-//        } else {
-            // $this->error($payload);
-//        }
         return $this->response;
     }
 
@@ -122,13 +110,17 @@ class AuraViewStaticPage extends AbstractResponder
     {
         //
         // $slug = 'error';
-        if (isset($data)) {
+        if (isset($data))
+		{
 
             // $slug = $this->request->getAttribute('page');
             $slugFromPayload = $this->payload->getOutput();
             $slug = $slugFromPayload['slug'];
 
-
+			// if (!isset($slugFromPayload['slug']))
+			// {
+			//	$slug = 'index';
+			// }
             // $this->request = $this->request->withAttribute('page', 'error.php');
             //setup views
 //            $this->loadTemplate();
@@ -140,8 +132,8 @@ class AuraViewStaticPage extends AbstractResponder
 
 // set thir probaly fro config file
         // Aura.view setup
-        $view_factory = new ViewFactory;
-        $view = $view_factory->newInstance();
+        $view_factory = new ViewFactory; // a
+        $view = $view_factory->newInstance(); // 
 
         // layout
         $layout_registry = $view->getLayoutRegistry();
@@ -153,12 +145,7 @@ class AuraViewStaticPage extends AbstractResponder
         $slug = $this->request->getAttribute('page');
         $partial_view = $this->staticpages . $slug . '.php';
 
-        /*
-         * check if the partial file exists,
-         * and throw an 404 error if aura view template not found
-         * NOTE: if /{name} route is not defined then this check is obsolete
-         * if the wiev and template files are in their places
-         */
+        // check if the partial file exists, if not set status 404
         if(!file_exists($partial_view))
         {
             $this->response = $this->response->withStatus(404);
@@ -168,17 +155,14 @@ class AuraViewStaticPage extends AbstractResponder
         // set the registy
         $view_registry->set('_content', $partial_view);
 
-        /*
-         * assign data to the view
-         */
-        // set data
+		// demo data
         $dataset = [
             'data' => $data, // passing data array to view
             'partial' => 'partial', // passing partial view filename as string to layout
             'debug' => $this->payload->getStatus(),
-            //'debugmessage ' => $this->debugmessage,
         ];
 
+        // assign data to the view
         $view->setData($dataset);
 
         /*
@@ -187,6 +171,7 @@ class AuraViewStaticPage extends AbstractResponder
         if ( $this->is_pjax() )
         {
             // pjax request, set the view only
+			// $this->renderView();
             $view->setView('_content');
         } else {
             // regular http request, set view and layout

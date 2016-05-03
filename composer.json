@@ -15,7 +15,8 @@
         "aura/view": "^2.2",
         "filp/whoops": "^2.1",
         "fusible/view-provider": "^1.0",
-        "jnjxp/viewd": "^0.1.0"
+        "jnjxp/viewd": "^0.1.0",
+        "jnjxp/routeless": "dev-develop"
     },
     "autoload": {
         "psr-4": {

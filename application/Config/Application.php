@@ -124,10 +124,7 @@ class Application extends ContainerConfig
         $adr->middle('Radar\Adr\Handler\RoutingHandler');
         $adr->middle('Radar\Adr\Handler\ActionHandler');
 
-
-
         //$container->register(new \WhoopsPimple\WhoopsServiceProvider);
-
 
         /**
          * Input
@@ -160,17 +157,30 @@ class Application extends ContainerConfig
                 'page' => 'index'
             ]);
 
-        // domain test route
-        $adr->get('aura.page', '/aura/{page}?', \Application\Domain\Aura::class)
+        // aura view including static partials
+        $adr->get('aura.staticpage', '/aura/{page}?', \Application\Domain\Aura::class)
             // ->input('Application\Input\MergedArray')
             ->responder('Application\Responder\AuraViewStaticPage')
             ->defaults([
                 'page' => 'index'
             ])
+			// ->addValues([
+			// 	'mediatype' => 'application/xhtml+xml',
+			// ])
             ->tokens([
                 'page' => '|index|mikka|mikka2|mikka3'
             ]);
 
+        // database stuff
+        $adr->get('aura.page', '/aura/{page}?', \Application\Domain\Aura::class)
+            // ->input('Application\Input\MergedArray')
+            ->responder('Application\Responder\AuraViewStaticPage')
+            ->defaults([
+                'page' => 'content'
+            ])
+            ->tokens([
+                'page' => 'content'
+            ]);
 
 
         // page from DB

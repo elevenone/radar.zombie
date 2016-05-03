@@ -11,13 +11,11 @@
 namespace Application\Responder;
 
 use Aura\View\View;
-
+use Aura\View\ViewFactory as ViewFactory;
 use Aura\Payload_Interface\PayloadStatus;
-
+use Aura\Payload_Interface\PayloadInterface as Payload;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-
-use Aura\Payload_Interface\PayloadInterface as Payload;
 
 /**
  * Abstract Responder
@@ -38,6 +36,15 @@ abstract class AbstractResponder
         return method_exists($this, $method) ? $method : 'unknown';
     }
 
+    protected function renderView($view)
+    {
+        $view_factory = new \Aura\View\ViewFactory;
+        $this->view = $view_factory->newInstance();
+        $this->view->setView($view);
+        
+        $this->response->withBody($this->view->__invoke());
+    }
+
     /**
      * Builds a Response for PayloadStatus::SUCCESS.
      */
@@ -50,7 +57,7 @@ abstract class AbstractResponder
     protected function notFound()
     {
         $this->response = $this->response->withStatus(404);
-        $this->Body($this->payload->getInput());
+        $this->htmlBody($this->payload->getInput());
     }
 
     /**

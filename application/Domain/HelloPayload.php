@@ -11,13 +11,13 @@ class HelloPayload
      * @param array $input
      * @return Payload
      */
-    public function __invoke()
+    public function __invoke(array $input)
     {
         $payload = new Payload();
         return $payload
             ->setStatus(PayloadStatus::SUCCESS)
             ->setOutput([
-                'message' => 'input is : ' . $input['page']
+                'message' => 'input is a : ' . $input['page']
             ]);
     }
 }
