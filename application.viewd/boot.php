@@ -16,11 +16,42 @@ $view = (new ViewFactory)->newInstance(
     (new HelperLocatorFactory)->newInstance()
 );
 
-$view->setLayout('default');
+
+$request = ServerRequestFactory::fromGlobals();
+$method = $request->getMethod();
+$path = $request->getUri()->getPath();
+
+echo '<pre><hr/>';
+print_r( $path );
+echo '</pre><hr/>';
+/*
+$request = ServerRequestFactory::fromGlobals();
+$method  = $request->getMethod();
+$path    = $request->getUri()->getPath();
+$accept  = $request->getHeader('Accept');
+$data    = json_decode((string) $request->getBody());
+$query   = $request->getQueryParams();
+$cookies = $request->getCookieParams();
+$files   = $request->getFileParams();
+*/
+// https://slides.mwop.net/2015-04-10-PSR7-in-the-Middle/#/10/3
+
+$default = 'default';
+
+// if( !isset( $path ) OR empty($path) OR $path === '')
+if( !is_null( $path ) )
+{
+    $layout = 'index';
+} else {
+    $layout = ltrim($path, '/');
+}
+
+$view->setLayout( $layout );
+
+
+
 
 $templates = dirname(__DIR__) . '/application.viewd/templates';
-
-
 
 echo "{$templates}/views";
 echo '<hr/>';
