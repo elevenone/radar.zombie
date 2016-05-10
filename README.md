@@ -31,3 +31,8 @@ You can also browse to <http://localhost:8080/your-name> and see modified JSON o
 
 You can read the documentation [here](docs/index.md).
 https://www.youtube.com/watch?v=yEc48QfkFcY&feature=youtu.be
+
+
+
+GOOD
+https://slides.mwop.net/2015-04-10-PSR7-in-the-Middle/#/15
