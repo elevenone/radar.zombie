@@ -21,7 +21,7 @@ $boot = new Boot();
 // boot adr with Config
 $adr = $boot->adr([
     Application\Config\Application::class,
-	Jnjxp\Routeless\Config::class
+    // Jnjxp\Routeless\Config::class,
     // 'Application\\Config\\Routes',
 ]);
 

@@ -115,12 +115,14 @@ class AuraViewStaticPage extends AbstractResponder
 
             // $slug = $this->request->getAttribute('page');
             $slugFromPayload = $this->payload->getOutput();
-            $slug = $slugFromPayload['slug'];
+//             $slug = $slugFromPayload['slug'];
 
-			// if (!isset($slugFromPayload['slug']))
-			// {
-			//	$slug = 'index';
-			// }
+            if (isset($slugFromPayload['slug']))
+            {
+                $slug = $slugFromPayload['slug'];
+            } else {
+                $slug = 'index';
+            }
             // $this->request = $this->request->withAttribute('page', 'error.php');
             //setup views
 //            $this->loadTemplate();
