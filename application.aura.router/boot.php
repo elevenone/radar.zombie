@@ -38,7 +38,6 @@ $map = $routerContainer->getMap();
 $map->get('blog.read', '/blog/{id}', function ($request, $response) {
     $id = (int) $request->getAttribute('id');
     $response->getBody()->write("You asked for blog entry {$id}.");
-  //  $zzz = new Application\Domain\Core;
     return $response;
 });
 
@@ -92,12 +91,13 @@ if (! $route) {
 }
 
 
-
+$zzz = inlcude 'a.php';
 
 
 use Zend\Diactoros\Response\HtmlResponse;
 $response = new HtmlResponse('a');
 $response = new HtmlResponse('<strong>b</strong>', 200, [ 'Content-Type' => ['text/html']]);
+$response = new HtmlResponse($zzz, 200, [ 'Content-Type' => ['text/html']]);
 
 
 

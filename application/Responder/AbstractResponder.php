@@ -78,12 +78,13 @@ abstract class AbstractResponder
     {
         $serverparams = $this->request->getServerParams();
 
-        if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
+        // $accept  = $request->getHeader('HTTP_X_PJAX');
+        print_r($this->request);
+        // if(isset( $serverparams['HTTP_X_PJAX'] ) && $serverparams['HTTP_X_PJAX'] == 'true')
+        if( $this->request->getHeader('HTTP_X_PJAX') )
         {
-            $serverparams = $this->request->getServerParams();
             return TRUE;
         }
-        $serverparams = $this->request->getServerParams();
         return FALSE;
     }
 }

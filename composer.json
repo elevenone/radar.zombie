@@ -16,7 +16,8 @@
         "filp/whoops": "^2.1",
         "fusible/view-provider": "^1.0",
         "jnjxp/viewd": "^0.1.0",
-        "jnjxp/routeless": "dev-develop"
+        "jnjxp/routeless": "dev-develop",
+        "twig/twig": "~1.0"
     },
     "autoload": {
         "psr-4": {

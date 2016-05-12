@@ -28,8 +28,8 @@ $run->register();
 
 
 //
-// require dirname(__DIR__) . '/application/boot.php';
+require dirname(__DIR__) . '/application/boot.php';
 // require dirname(__DIR__) . '/application.viewd/boot.php';
-require dirname(__DIR__) . '/application.aura.router/boot.php';
+// require dirname(__DIR__) . '/application.aura.router/boot.php';
 
 // eof
