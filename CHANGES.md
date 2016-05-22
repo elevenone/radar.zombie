@@ -15,5 +15,8 @@ https://github.com/kenjis/php-framework-benchmark/blob/master/radar-1.0-dev/docs
 resize canvas
 http://htmlcheats.com/html/resize-the-html5-canvas-dyamically/
 
+parallax scroll
+https://ihatetomatoes.net/how-to-create-a-parallax-scrolling-website/
+
 for now this is a complete mess
 
